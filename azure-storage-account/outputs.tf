@@ -35,6 +35,27 @@ output "storage_account_identity" {
   value = azurerm_storage_account.this.identity
 }
 
+# User-assigned Managed Identity outputs
+output "user_assigned_identity_id" {
+  value       = azurerm_user_assigned_identity.storage_identity.id
+  description = "The ID of the user-assigned managed identity"
+}
+
+output "user_assigned_identity_principal_id" {
+  value       = azurerm_user_assigned_identity.storage_identity.principal_id
+  description = "The Principal ID of the user-assigned managed identity"
+}
+
+output "user_assigned_identity_client_id" {
+  value       = azurerm_user_assigned_identity.storage_identity.client_id
+  description = "The Client ID of the user-assigned managed identity"
+}
+
+output "user_assigned_identity_tenant_id" {
+  value       = azurerm_user_assigned_identity.storage_identity.tenant_id
+  description = "The Tenant ID of the user-assigned managed identity"
+}
+
 # Research Resource Group outputs
 output "research_resource_group_name" {
   value       = azurerm_resource_group.research.name

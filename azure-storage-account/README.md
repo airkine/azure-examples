@@ -46,6 +46,49 @@ This project sets up an Azure Storage Account using Terraform. It is organized i
 5. **Accessing Outputs**:
    After applying, you can view the outputs defined in `outputs.tf` to get information such as the storage account endpoint.
 
+## New Features and Resources
+
+This project now includes additional resources and configurations for enhanced backup and data protection:
+
+### Resources Added
+
+1. **Blob Backup Policy**:
+   - Configures a backup policy for Azure Blob Storage.
+   - Includes daily backups with a retention period of 30 days.
+
+2. **Backup Vault**:
+   - A centralized vault for managing backup policies and instances.
+
+3. **Role Assignments**:
+   - Assigns roles such as `Storage Blob Data Contributor` and `Backup Reader` to ensure proper access control for backup operations.
+
+4. **Backup Instances**:
+   - Creates backup instances for both disk and blob storage.
+
+5. **Storage Container for Backups**:
+   - A dedicated container for storing blob backups.
+
+### Updated Instructions
+
+1. **Enable Backup Features**:
+   - Set the `enable_backup` and `enable_blob_backup` variables to `true` in `variables.tf` to deploy backup-related resources.
+
+2. **Deploy Backup Policies**:
+   - Ensure the `azurerm_data_protection_backup_policy_blob_storage` and `azapi_resource` configurations are properly set up in `main.tf`.
+
+3. **Role Assignments**:
+   - Verify that the required role assignments are created to grant necessary permissions for backup operations.
+
+4. **View Backup Configurations**:
+   - After deployment, review the backup policies and instances in the Azure portal under the Backup Vault resource.
+
+### Notes
+
+- The `schema_validation_enabled` flag is set to `false` for certain resources to bypass schema validation issues.
+- Ensure that the `objectType` property is correctly defined in the `azapi_resource` configurations.
+
+Refer to the `main.tf` file for detailed configurations of these resources.
+
 ## Notes
 
 - Ensure that the variables in `variables.tf` are set according to your environment before running the Terraform commands.

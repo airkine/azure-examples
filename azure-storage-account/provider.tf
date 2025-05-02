@@ -11,6 +11,8 @@ provider "azurerm" {
   }
 }
 
+provider "azapi" {}
+
 terraform {
   required_version = ">= 1.0.0"
   required_providers {
@@ -21,6 +23,10 @@ terraform {
     random = {
       source  = "hashicorp/random"
       version = ">= 3.0.0"
+    }
+    azapi = {
+      source  = "Azure/azapi"
+      version = ">=1.12.0"
     }
   }
 }
