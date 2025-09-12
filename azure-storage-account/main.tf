@@ -144,7 +144,7 @@ resource "azurerm_storage_share" "backup_shares" {
   for_each = var.enable_backup ? var.backup_shares : {}
 
   name               = each.value
-  storage_account_id = azurerm_storage_account.this.id
+  storage_account_name = azurerm_storage_account.this.name
   quota              = 50 # GB
 
   acl {
@@ -371,7 +371,7 @@ resource "azurerm_storage_container" "backup_container" {
   for_each = var.enable_blob_backup ? { enabled = true } : {}
 
   name                  = "blob-backups"
-  storage_account_id    = azurerm_storage_account.this.id
+  storage_account_name  = azurerm_storage_account.this.name
   container_access_type = "private"
 }
 
