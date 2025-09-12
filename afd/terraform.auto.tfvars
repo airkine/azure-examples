@@ -43,7 +43,7 @@ site1_centralus_https_port              = 443
 site1_centralus_cert_name_check_enabled = false
 
 route_site1_name                      = "route-site1"
-route_site1_patterns_to_match         = ["/site1/*"]
+route_site1_patterns_to_match         = ["/site1/*", "/"]
 route_site1_supported_protocols       = ["Https", "Http"]
 route_site1_forwarding_protocol       = "HttpsOnly"
 route_site1_https_redirect_enabled    = true
@@ -102,10 +102,52 @@ HTML
 security_policy_name = "frontdoor-security"
 
 diagnostic_setting_name      = "frontdoor-diagnostic-settings"
-diagnostic_enabled_logs      = ["FrontDoorAccessLog", "FrontDoorWebApplicationFirewallLog"]
+diagnostic_enabled_logs      = ["FrontDoorAccessLog", "FrontDoorWebApplicationFirewallLog","FrontDoorHealthProbeLog"]
 diagnostic_metric_categories = ["AllMetrics"]
 
 law_name              = "law-frontdoor-demo"
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_tags              = { environment = "sandbox", owner = "example" }
+
+# Site2 values
+site2_eastus2_storage_account_name   = "demoeastus2site2"
+site2_eastus2_location               = "eastus2"
+site2_centralus_storage_account_name = "democentralussite2"
+site2_centralus_location             = "centralus"
+
+site2_origin_group_name                  = "site2-origin-group"
+site2_session_affinity_enabled           = false
+site2_lb_sample_size                     = 4
+site2_lb_successful_samples_required     = 3
+site2_health_probe_path                  = "/"
+site2_health_probe_protocol              = "Https"
+site2_health_probe_interval              = 60
+site2_health_probe_request_type          = "HEAD"
+
+site2_eastus2_origin_name                = "site2-eastus2-origin"
+site2_eastus2_origin_priority            = 1
+site2_eastus2_origin_weight              = 50
+site2_eastus2_origin_enabled             = true
+site2_eastus2_http_port                  = 80
+site2_eastus2_https_port                 = 443
+site2_eastus2_cert_name_check_enabled    = false
+
+site2_centralus_origin_name              = "site2-centralus-origin"
+site2_centralus_origin_priority          = 1
+site2_centralus_origin_weight            = 50
+site2_centralus_origin_enabled           = true
+site2_centralus_http_port                = 80
+site2_centralus_https_port               = 443
+site2_centralus_cert_name_check_enabled  = false
+
+route_site2_name                        = "route-site2"
+route_site2_patterns_to_match           = ["/site2/*"]
+route_site2_supported_protocols         = ["Https", "Http"]
+route_site2_origin_path               = "/"
+route_site2_forwarding_protocol         = "HttpsOnly"
+route_site2_https_redirect_enabled      = true
+route_site2_qs_caching_behavior         = "IgnoreQueryString"
+route_site2_compression_enabled         = true
+route_site2_content_types_to_compress   = ["text/html", "text/css", "application/javascript"]
+route_site2_link_to_default_domain      = true

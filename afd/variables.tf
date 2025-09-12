@@ -358,3 +358,154 @@ variable "azure_subscription_id" {
   default     = null
   description = "Subscription ID to target. If null, the provider's default subscription is used."
 }
+
+# Site2 resources (mirrors Site1)
+variable "site2_eastus2_storage_account_name" {
+  type        = string
+  description = "Storage account name for site2 in EastUS2."
+}
+variable "site2_eastus2_location" {
+  type        = string
+  description = "Azure region for site2 EastUS2 storage account."
+}
+variable "site2_centralus_storage_account_name" {
+  type        = string
+  description = "Storage account name for site2 in CentralUS."
+}
+variable "site2_centralus_location" {
+  type        = string
+  description = "Azure region for site2 CentralUS storage account."
+}
+
+variable "site2_origin_group_name" {
+  type        = string
+  description = "Front Door origin group name for site2."
+}
+variable "site2_session_affinity_enabled" {
+  type        = bool
+  description = "Session affinity for site2 origin group."
+}
+variable "site2_lb_sample_size" {
+  type        = number
+  description = "LB sample size for site2 origin group."
+}
+variable "site2_lb_successful_samples_required" {
+  type        = number
+  description = "Successful samples required for site2 origin group."
+}
+variable "site2_health_probe_path" {
+  type        = string
+  description = "Health probe path for site2."
+}
+variable "site2_health_probe_protocol" {
+  type        = string
+  description = "Health probe protocol for site2."
+}
+variable "site2_health_probe_interval" {
+  type        = number
+  description = "Health probe interval for site2."
+}
+variable "site2_health_probe_request_type" {
+  type        = string
+  description = "Health probe request type for site2."
+}
+
+variable "site2_eastus2_origin_name" {
+  type        = string
+  description = "Origin name for site2 EastUS2."
+}
+variable "site2_eastus2_origin_priority" {
+  type        = number
+  description = "Priority for site2 EastUS2 origin."
+}
+variable "site2_eastus2_origin_weight" {
+  type        = number
+  description = "Weight for site2 EastUS2 origin."
+}
+variable "site2_eastus2_origin_enabled" {
+  type        = bool
+  description = "Enable site2 EastUS2 origin."
+}
+variable "site2_eastus2_http_port" {
+  type        = number
+  description = "HTTP port for site2 EastUS2 origin."
+}
+variable "site2_eastus2_https_port" {
+  type        = number
+  description = "HTTPS port for site2 EastUS2 origin."
+}
+variable "site2_eastus2_cert_name_check_enabled" {
+  type        = bool
+  description = "Cert name check for site2 EastUS2 origin."
+}
+
+variable "site2_centralus_origin_name" {
+  type        = string
+  description = "Origin name for site2 CentralUS."
+}
+variable "site2_centralus_origin_priority" {
+  type        = number
+  description = "Priority for site2 CentralUS origin."
+}
+variable "site2_centralus_origin_weight" {
+  type        = number
+  description = "Weight for site2 CentralUS origin."
+}
+variable "site2_centralus_origin_enabled" {
+  type        = bool
+  description = "Enable site2 CentralUS origin."
+}
+variable "site2_centralus_http_port" {
+  type        = number
+  description = "HTTP port for site2 CentralUS origin."
+}
+variable "site2_centralus_https_port" {
+  type        = number
+  description = "HTTPS port for site2 CentralUS origin."
+}
+variable "site2_centralus_cert_name_check_enabled" {
+  type        = bool
+  description = "Cert name check for site2 CentralUS origin."
+}
+
+variable "route_site2_name" {
+  type        = string
+  description = "Name of the Front Door route for site2."
+}
+variable "route_site2_patterns_to_match" {
+  type        = list(string)
+  description = "Patterns for site2 route."
+}
+variable "route_site2_supported_protocols" {
+  type        = list(string)
+  description = "Supported protocols for site2 route."
+}
+variable "route_site2_forwarding_protocol" {
+  type        = string
+  description = "Forwarding protocol for site2 route."
+}
+variable "route_site2_https_redirect_enabled" {
+  type        = bool
+  description = "HTTPS redirect for site2 route."
+}
+variable "route_site2_qs_caching_behavior" {
+  type        = string
+  description = "QS caching for site2 route."
+}
+variable "route_site2_compression_enabled" {
+  type        = bool
+  description = "Compression for site2 route."
+}
+variable "route_site2_content_types_to_compress" {
+  type        = list(string)
+  description = "Content types to compress for site2 route."
+}
+variable "route_site2_link_to_default_domain" {
+  type        = bool
+  description = "Link to default domain for site2 route."
+}
+
+variable "route_site2_origin_path" {
+  type        = string
+  description = "The origin path to use when forwarding requests to the origin for site2. This value is appended to the origin host name when making requests to the origin."  
+}

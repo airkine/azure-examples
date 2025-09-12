@@ -28,6 +28,23 @@ resource "azurerm_cdn_frontdoor_origin_group" "site1_origin_group" {
   }
 }
 
+# Origin Group for Site2
+resource "azurerm_cdn_frontdoor_origin_group" "site2_origin_group" {
+  name                     = var.site2_origin_group_name
+  cdn_frontdoor_profile_id = azurerm_cdn_frontdoor_profile.fd_profile.id
+  session_affinity_enabled = var.site2_session_affinity_enabled
+  load_balancing {
+    sample_size                 = var.site2_lb_sample_size
+    successful_samples_required = var.site2_lb_successful_samples_required
+  }
+  health_probe {
+    path                = var.site2_health_probe_path
+    protocol            = var.site2_health_probe_protocol
+    interval_in_seconds = var.site2_health_probe_interval
+    request_type        = var.site2_health_probe_request_type
+  }
+}
+
 # Origins for Site1 in two regions
 resource "azurerm_cdn_frontdoor_origin" "site1_eastus2" {
   name                           = var.site1_eastus2_origin_name
@@ -42,6 +59,37 @@ resource "azurerm_cdn_frontdoor_origin" "site1_eastus2" {
   certificate_name_check_enabled = false # disable since using azure *.web.core.windows cert
 
   depends_on = [azurerm_storage_account_static_website.site1_eastus2_web] # ensure website enabled before origin creation
+}
+
+# Origins for Site2 in two regions
+resource "azurerm_cdn_frontdoor_origin" "site2_eastus2" {
+  name                           = var.site2_eastus2_origin_name
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.site2_origin_group.id
+  host_name                      = trim(replace(azurerm_storage_account.site2_eastus2.primary_web_endpoint, "https://", ""), "/")
+  origin_host_header             = trim(replace(azurerm_storage_account.site2_eastus2.primary_web_endpoint, "https://", ""), "/")
+  priority                       = var.site2_eastus2_origin_priority
+  weight                         = var.site2_eastus2_origin_weight
+  enabled                        = var.site2_eastus2_origin_enabled
+  http_port                      = var.site2_eastus2_http_port
+  https_port                     = var.site2_eastus2_https_port
+  certificate_name_check_enabled = var.site2_eastus2_cert_name_check_enabled
+
+  depends_on = [azurerm_storage_account_static_website.site2_eastus2_web]
+}
+
+resource "azurerm_cdn_frontdoor_origin" "site2_centralus" {
+  name                           = var.site2_centralus_origin_name
+  cdn_frontdoor_origin_group_id  = azurerm_cdn_frontdoor_origin_group.site2_origin_group.id
+  host_name                      = trim(replace(azurerm_storage_account.site2_centralus.primary_web_endpoint, "https://", ""), "/")
+  origin_host_header             = trim(replace(azurerm_storage_account.site2_centralus.primary_web_endpoint, "https://", ""), "/")
+  priority                       = var.site2_centralus_origin_priority
+  weight                         = var.site2_centralus_origin_weight
+  enabled                        = var.site2_centralus_origin_enabled
+  http_port                      = var.site2_centralus_http_port
+  https_port                     = var.site2_centralus_https_port
+  certificate_name_check_enabled = var.site2_centralus_cert_name_check_enabled
+
+  depends_on = [azurerm_storage_account_static_website.site2_centralus_web]
 }
 
 resource "azurerm_cdn_frontdoor_origin" "site1_centralus" {
@@ -87,3 +135,23 @@ resource "azurerm_cdn_frontdoor_route" "route_site1" {
 }
 
 ## Route for Site2 can be added once Site2 origins/groups exist
+resource "azurerm_cdn_frontdoor_route" "route_site2" {
+  name                          = var.route_site2_name
+  cdn_frontdoor_origin_path     = var.route_site2_origin_path
+  cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.fd_endpoint.id
+  cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.site2_origin_group.id
+  cdn_frontdoor_origin_ids      = [
+    azurerm_cdn_frontdoor_origin.site2_eastus2.id,
+    azurerm_cdn_frontdoor_origin.site2_centralus.id
+  ]
+  patterns_to_match        = var.route_site2_patterns_to_match
+  link_to_default_domain   = var.route_site2_link_to_default_domain
+  supported_protocols      = var.route_site2_supported_protocols
+  forwarding_protocol      = var.route_site2_forwarding_protocol
+  https_redirect_enabled   = var.route_site2_https_redirect_enabled
+  cache {
+    query_string_caching_behavior = var.route_site2_qs_caching_behavior
+    compression_enabled           = var.route_site2_compression_enabled
+    content_types_to_compress     = var.route_site2_content_types_to_compress
+  }
+}
