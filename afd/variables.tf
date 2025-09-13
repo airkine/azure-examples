@@ -509,3 +509,13 @@ variable "route_site2_origin_path" {
   type        = string
   description = "The origin path to use when forwarding requests to the origin for site2. This value is appended to the origin host name when making requests to the origin."  
 }
+
+variable "dns_resource_group_name" {
+  type        = string
+  description = "Name of the resource group containing the DNS zone to use for custom domains."
+  }
+
+  variable "dns_zone_name" {
+    type        = string
+    description = "Name of the DNS zone to use for custom domains."
+  }

@@ -151,3 +151,7 @@ route_site2_qs_caching_behavior         = "IgnoreQueryString"
 route_site2_compression_enabled         = true
 route_site2_content_types_to_compress   = ["text/html", "text/css", "application/javascript"]
 route_site2_link_to_default_domain      = true
+
+
+dns_resource_group_name = "rg-management"
+dns_zone_name           = "autoaaron.xyz"
