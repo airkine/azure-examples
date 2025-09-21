@@ -119,11 +119,15 @@ resource "azurerm_cdn_frontdoor_route" "route_site1" {
     azurerm_cdn_frontdoor_origin.site1_eastus2.id,
     azurerm_cdn_frontdoor_origin.site1_centralus.id
   ]
+  cdn_frontdoor_custom_domain_ids = [
+    azurerm_cdn_frontdoor_custom_domain.afd_custom_domain.id
+  ]
   patterns_to_match      = var.route_site1_patterns_to_match
   link_to_default_domain = var.route_site1_link_to_default_domain
   supported_protocols    = var.route_site1_supported_protocols
   forwarding_protocol    = var.route_site1_forwarding_protocol
   https_redirect_enabled = var.route_site1_https_redirect_enabled
+
   dynamic "cache" {
     for_each = var.route_site1_cache_enabled ? [1] : []
     content {
@@ -140,15 +144,18 @@ resource "azurerm_cdn_frontdoor_route" "route_site2" {
   cdn_frontdoor_origin_path     = var.route_site2_origin_path
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.fd_endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.site2_origin_group.id
-  cdn_frontdoor_origin_ids      = [
+  cdn_frontdoor_origin_ids = [
     azurerm_cdn_frontdoor_origin.site2_eastus2.id,
     azurerm_cdn_frontdoor_origin.site2_centralus.id
   ]
-  patterns_to_match        = var.route_site2_patterns_to_match
-  link_to_default_domain   = var.route_site2_link_to_default_domain
-  supported_protocols      = var.route_site2_supported_protocols
-  forwarding_protocol      = var.route_site2_forwarding_protocol
-  https_redirect_enabled   = var.route_site2_https_redirect_enabled
+  cdn_frontdoor_custom_domain_ids = [
+    azurerm_cdn_frontdoor_custom_domain.afd_custom_domain.id
+  ]
+  patterns_to_match      = var.route_site2_patterns_to_match
+  link_to_default_domain = var.route_site2_link_to_default_domain
+  supported_protocols    = var.route_site2_supported_protocols
+  forwarding_protocol    = var.route_site2_forwarding_protocol
+  https_redirect_enabled = var.route_site2_https_redirect_enabled
   cache {
     query_string_caching_behavior = var.route_site2_qs_caching_behavior
     compression_enabled           = var.route_site2_compression_enabled
