@@ -11,6 +11,46 @@ The configuration performs these high-level actions:
 - Declares a managed custom domain (`azurerm_cdn_frontdoor_custom_domain`) for `afd.autoaaron.xyz`
 - (Optionally) Creates DNS records in Azure DNS: a CNAME (`afd`) and a `_dnsauth.afd` TXT used by Front Door for ownership validation
 - Declares a WAF policy and associates it with the Front Door profile / custom domain
+- **Creates maintenance pages for all static websites** - professional maintenance pages are deployed to each storage account
+
+Maintenance Pages
+-----------------
+Each static website has a dedicated maintenance page (`maintenance.html`) that can be used during scheduled maintenance or outages. The maintenance pages include:
+
+- **Professional styling** with responsive design
+- **Auto-refresh capability** (every 30 seconds by default)
+- **Site-specific information** including storage account details and region
+- **Color-coded themes** matching each site's branding
+- **Estimated duration display** for user expectations
+
+### Accessing Maintenance Pages
+To access the maintenance pages directly on each storage account:
+- Site1 East US 2: `https://{site1-eastus2-storage-account}.z13.web.core.windows.net/maintenance.html`
+- Site1 Central US: `https://{site1-centralus-storage-account}.z4.web.core.windows.net/maintenance.html`
+- Site2 East US 2: `https://{site2-eastus2-storage-account}.z13.web.core.windows.net/maintenance.html`
+- Site2 Central US: `https://{site2-centralus-storage-account}.z4.web.core.windows.net/maintenance.html`
+
+### Maintenance Mode Configuration
+Control maintenance page behavior using these variables:
+- `maintenance_page_enabled` - Enable/disable maintenance page creation (default: `true`)
+- `maintenance_page_refresh_interval` - Auto-refresh interval in seconds (default: `30`)
+- `maintenance_expected_duration` - Expected duration text (default: `"15-30 minutes"`)
+- `maintenance_message` - Custom maintenance message
+
+Example customization in `terraform.tfvars`:
+```hcl
+maintenance_page_refresh_interval = 60
+maintenance_expected_duration     = "1-2 hours"
+maintenance_message              = "We're upgrading our infrastructure to serve you better. Thank you for your patience."
+```
+
+### Switching to Maintenance Mode
+To redirect traffic to maintenance pages:
+1. **Option A (Azure Portal)**: Update Azure Front Door routes to point to `maintenance.html`
+2. **Option B (DNS)**: Temporarily update DNS records to point directly to storage account endpoints
+3. **Option C (WAF Rules)**: Create WAF rules to redirect specific traffic to maintenance pages
+
+**Note**: These maintenance pages are always available but require manual routing configuration to display them to users.
 
 Two-step apply workflow (recommended)
 -------------------------------------

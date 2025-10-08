@@ -519,3 +519,32 @@ variable "dns_resource_group_name" {
     type        = string
     description = "Name of the DNS zone to use for custom domains."
   }
+
+# Maintenance page configuration variables
+variable "maintenance_page_enabled" {
+  type        = bool
+  description = "Whether to create maintenance pages for the static websites."
+  default     = true
+}
+
+variable "maintenance_page_refresh_interval" {
+  type        = number
+  description = "Auto-refresh interval for maintenance pages in seconds."
+  default     = 30
+  validation {
+    condition     = var.maintenance_page_refresh_interval >= 10 && var.maintenance_page_refresh_interval <= 300
+    error_message = "Maintenance page refresh interval must be between 10 and 300 seconds."
+  }
+}
+
+variable "maintenance_expected_duration" {
+  type        = string
+  description = "Expected duration text to display on maintenance pages."
+  default     = "15-30 minutes"
+}
+
+variable "maintenance_message" {
+  type        = string
+  description = "Custom maintenance message to display on maintenance pages."
+  default     = "We're performing scheduled maintenance to improve your experience. Please check back shortly."
+}

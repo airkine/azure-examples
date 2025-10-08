@@ -115,6 +115,7 @@ resource "azurerm_cdn_frontdoor_route" "route_site1" {
   cdn_frontdoor_origin_path     = var.route_site1_origin_path
   cdn_frontdoor_endpoint_id     = azurerm_cdn_frontdoor_endpoint.fd_endpoint.id
   cdn_frontdoor_origin_group_id = azurerm_cdn_frontdoor_origin_group.site1_origin_group.id
+  cdn_frontdoor_rule_set_ids   = [azurerm_cdn_frontdoor_rule_set.main.id]
   cdn_frontdoor_origin_ids = [
     azurerm_cdn_frontdoor_origin.site1_eastus2.id,
     azurerm_cdn_frontdoor_origin.site1_centralus.id
@@ -127,6 +128,7 @@ resource "azurerm_cdn_frontdoor_route" "route_site1" {
   supported_protocols    = var.route_site1_supported_protocols
   forwarding_protocol    = var.route_site1_forwarding_protocol
   https_redirect_enabled = var.route_site1_https_redirect_enabled
+  
 
   dynamic "cache" {
     for_each = var.route_site1_cache_enabled ? [1] : []
